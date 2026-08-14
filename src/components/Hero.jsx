@@ -2,7 +2,6 @@ import React, { useRef, useState, useEffect } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { Float } from '@react-three/drei';
 import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
-import { Model } from './SpaceStation';
 
 const content = [
   { 
@@ -27,22 +26,57 @@ const content = [
   }
 ];
 
-const InteractiveStation = () => {
-  const mouseRef = useRef();
+const InteractiveCore = () => {
+  const groupRef = useRef();
 
   useFrame((state) => {
-    const { pointer } = state;
-    const targetX = (pointer.x * Math.PI) / 6;
-    const targetY = (pointer.y * Math.PI) / 6;
+    const { pointer, clock } = state;
+    const targetX = (pointer.x * Math.PI) / 4;
+    const targetY = (pointer.y * Math.PI) / 4;
 
-    mouseRef.current.rotation.y += (targetX - mouseRef.current.rotation.y) * 0.1;
-    mouseRef.current.rotation.x += (-targetY - mouseRef.current.rotation.x) * 0.1;
+    groupRef.current.rotation.y += (targetX - groupRef.current.rotation.y) * 0.05;
+    groupRef.current.rotation.x += (-targetY - groupRef.current.rotation.x) * 0.05;
+    
+    // Auto rotation
+    groupRef.current.rotation.z = clock.getElapsedTime() * 0.1;
   });
 
   return (
-    <group ref={mouseRef}>
+    <group ref={groupRef}>
       <Float speed={2} rotationIntensity={1} floatIntensity={2}>
-        <Model scale={0.6} />
+        <mesh>
+          <torusKnotGeometry args={[2, 0.4, 128, 32]} />
+          <meshStandardMaterial 
+            color="#6366f1" 
+            wireframe 
+            emissive="#6366f1"
+            emissiveIntensity={1}
+            transparent
+            opacity={0.6}
+          />
+        </mesh>
+        <mesh scale={0.98}>
+          <torusKnotGeometry args={[2, 0.4, 64, 16]} />
+          <meshStandardMaterial 
+            color="#c084fc" 
+            wireframe 
+            emissive="#c084fc"
+            emissiveIntensity={0.5}
+            transparent
+            opacity={0.4}
+          />
+        </mesh>
+        {/* Core sphere */}
+        <mesh>
+          <sphereGeometry args={[1.2, 32, 32]} />
+          <meshStandardMaterial 
+            color="#3b82f6" 
+            emissive="#3b82f6"
+            emissiveIntensity={0.8}
+            transparent
+            opacity={0.8}
+          />
+        </mesh>
       </Float>
     </group>
   );
@@ -113,7 +147,7 @@ const Hero = () => {
           <Canvas camera={{ position: [0, 0, 8], fov: 45 }}>
             <ambientLight intensity={0.5} />
             <directionalLight position={[5, 5, 5]} intensity={1} />
-            <InteractiveStation />
+            <InteractiveCore />
           </Canvas>
         </div>
         
