@@ -1,4 +1,4 @@
-# Shikhar Mishra - Premium Developer Portfolio 🚀
+# Shikhar Mishra - Portfolio 🚀
 
 A cutting-edge, highly interactive web developer portfolio built with React, Vite, TailwindCSS, and Framer Motion. This portfolio focuses on delivering a cinematic, physics-driven user experience with a futuristic glassmorphism aesthetic.
 
