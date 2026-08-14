@@ -26,7 +26,7 @@ const content = [
   }
 ];
 
-const InteractiveCore = () => {
+const ProceduralSpacecraft = () => {
   const groupRef = useRef();
 
   useFrame((state) => {
@@ -34,52 +34,87 @@ const InteractiveCore = () => {
     const targetX = (pointer.x * Math.PI) / 4;
     const targetY = (pointer.y * Math.PI) / 4;
 
+    // Smoothly rotate the ship towards the mouse
     groupRef.current.rotation.y += (targetX - groupRef.current.rotation.y) * 0.05;
     groupRef.current.rotation.x += (-targetY - groupRef.current.rotation.x) * 0.05;
     
-    // Auto rotation
-    groupRef.current.rotation.z = clock.getElapsedTime() * 0.1;
+    // Add a slight banking effect based on mouse X
+    groupRef.current.rotation.z = (pointer.x * Math.PI) / 6;
+
+    // Subtle hover animation
+    groupRef.current.position.y = Math.sin(clock.getElapsedTime()) * 0.2;
   });
 
+  const hullMaterial = <meshStandardMaterial color="#d1d5db" roughness={0.4} metalness={0.6} />;
+  const darkHullMaterial = <meshStandardMaterial color="#374151" roughness={0.5} metalness={0.7} />;
+  const glassMaterial = <meshStandardMaterial color="#38bdf8" roughness={0.1} metalness={0.9} emissive="#0284c7" emissiveIntensity={0.5} />;
+  const glowMaterial = <meshStandardMaterial color="#0ea5e9" emissive="#38bdf8" emissiveIntensity={2} toneMapped={false} />;
+
   return (
-    <group ref={groupRef}>
-      <Float speed={2} rotationIntensity={1} floatIntensity={2}>
-        <group scale={0.7}>
-          <mesh>
-            <torusKnotGeometry args={[1.8, 0.3, 128, 32]} />
-            <meshStandardMaterial 
-              color="#818cf8" 
-              wireframe 
-              emissive="#818cf8"
-              emissiveIntensity={0.8}
-              transparent
-              opacity={0.4}
-            />
-          </mesh>
-          <mesh scale={0.95}>
-            <torusKnotGeometry args={[1.8, 0.3, 64, 16]} />
-            <meshStandardMaterial 
-              color="#c084fc" 
-              wireframe 
-              emissive="#c084fc"
-              emissiveIntensity={0.5}
-              transparent
-              opacity={0.25}
-            />
-          </mesh>
-          {/* Core sphere */}
-          <mesh>
-            <sphereGeometry args={[0.9, 32, 32]} />
-            <meshStandardMaterial 
-              color="#38bdf8" 
-              emissive="#38bdf8"
-              emissiveIntensity={0.6}
-              transparent
-              opacity={0.7}
-            />
-          </mesh>
-        </group>
-      </Float>
+    <group ref={groupRef} scale={0.5}>
+      {/* Main Fuselage */}
+      <mesh rotation={[Math.PI / 2, 0, 0]}>
+        <cylinderGeometry args={[0.6, 0.8, 3, 16]} />
+        {hullMaterial}
+      </mesh>
+
+      {/* Ship Nose */}
+      <mesh position={[0, 0, 2.5]} rotation={[Math.PI / 2, 0, 0]}>
+        <coneGeometry args={[0.6, 2, 16]} />
+        {darkHullMaterial}
+      </mesh>
+
+      {/* Cockpit */}
+      <mesh position={[0, 0.7, 0.5]} rotation={[0.2, 0, 0]}>
+        <boxGeometry args={[0.8, 0.5, 1.5]} />
+        {glassMaterial}
+      </mesh>
+
+      {/* Wings */}
+      <group position={[0, -0.2, -0.5]}>
+        <mesh position={[2, 0, 0]} rotation={[0, 0.2, 0.1]}>
+          <boxGeometry args={[3.5, 0.1, 1.2]} />
+          {hullMaterial}
+        </mesh>
+        <mesh position={[-2, 0, 0]} rotation={[0, -0.2, -0.1]}>
+          <boxGeometry args={[3.5, 0.1, 1.2]} />
+          {hullMaterial}
+        </mesh>
+        
+        {/* Wing tips */}
+        <mesh position={[3.6, 0.3, 0]} rotation={[0, 0, 0]}>
+          <boxGeometry args={[0.1, 0.8, 1.2]} />
+          {darkHullMaterial}
+        </mesh>
+        <mesh position={[-3.6, 0.3, 0]} rotation={[0, 0, 0]}>
+          <boxGeometry args={[0.1, 0.8, 1.2]} />
+          {darkHullMaterial}
+        </mesh>
+      </group>
+
+      {/* Engines */}
+      <group position={[0, 0, -1.6]}>
+        {/* Left Engine */}
+        <mesh position={[0.5, 0, 0]} rotation={[Math.PI / 2, 0, 0]}>
+          <cylinderGeometry args={[0.4, 0.3, 1, 16]} />
+          {darkHullMaterial}
+        </mesh>
+        {/* Right Engine */}
+        <mesh position={[-0.5, 0, 0]} rotation={[Math.PI / 2, 0, 0]}>
+          <cylinderGeometry args={[0.4, 0.3, 1, 16]} />
+          {darkHullMaterial}
+        </mesh>
+        
+        {/* Engine Glows */}
+        <mesh position={[0.5, 0, -0.6]} rotation={[-Math.PI / 2, 0, 0]}>
+          <coneGeometry args={[0.3, 1.5, 16]} />
+          {glowMaterial}
+        </mesh>
+        <mesh position={[-0.5, 0, -0.6]} rotation={[-Math.PI / 2, 0, 0]}>
+          <coneGeometry args={[0.3, 1.5, 16]} />
+          {glowMaterial}
+        </mesh>
+      </group>
     </group>
   );
 };
@@ -149,7 +184,7 @@ const Hero = () => {
           <Canvas camera={{ position: [0, 0, 8], fov: 45 }}>
             <ambientLight intensity={0.5} />
             <directionalLight position={[5, 5, 5]} intensity={1} />
-            <InteractiveCore />
+            <ProceduralSpacecraft />
           </Canvas>
         </div>
         
