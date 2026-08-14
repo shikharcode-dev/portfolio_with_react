@@ -1,0 +1,63 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700;800&display=swap');
+@import "tailwindcss";
+
+html {
+  scroll-behavior: smooth;
+}
+
+:root {
+  font-family: 'Poppins', sans-serif;
+}
+
+@layer utilities {
+  .mask-fade-y {
+    mask-image: linear-gradient(to bottom, transparent, black 15%, black 85%, transparent);
+    -webkit-mask-image: linear-gradient(to bottom, transparent, black 15%, black 85%, transparent);
+  }
+}
+
+@keyframes marquee-up {
+  0% { transform: translateY(0%); }
+  100% { transform: translateY(-50%); }
+}
+
+@keyframes marquee-down {
+  0% { transform: translateY(-50%); }
+  100% { transform: translateY(0%); }
+}
+
+.animate-marquee-up {
+  animation: marquee-up 15s linear infinite;
+}
+
+.animate-marquee-down {
+  animation: marquee-down 15s linear infinite;
+}
+
+@keyframes orbit {
+  0% { transform: rotate(0deg) translateX(85px) rotate(0deg); }
+  100% { transform: rotate(360deg) translateX(85px) rotate(-360deg); }
+}
+
+.orbit-icon-1 { animation: orbit 15s linear infinite; }
+.orbit-icon-2 { animation: orbit 15s linear infinite; animation-delay: -3.75s; }
+.orbit-icon-3 { animation: orbit 15s linear infinite; animation-delay: -7.5s; }
+.orbit-icon-4 { animation: orbit 15s linear infinite; animation-delay: -11.25s; }
+
+@keyframes orbit-reverse {
+  0% { transform: rotate(0deg) translateX(130px) rotate(0deg); }
+  100% { transform: rotate(-360deg) translateX(130px) rotate(360deg); }
+}
+
+.orbit-icon-5 { animation: orbit-reverse 20s linear infinite; }
+.orbit-icon-6 { animation: orbit-reverse 20s linear infinite; animation-delay: -5s; }
+.orbit-icon-7 { animation: orbit-reverse 20s linear infinite; animation-delay: -10s; }
+.orbit-icon-8 { animation: orbit-reverse 20s linear infinite; animation-delay: -15s; }
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
