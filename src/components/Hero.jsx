@@ -44,39 +44,41 @@ const InteractiveCore = () => {
   return (
     <group ref={groupRef}>
       <Float speed={2} rotationIntensity={1} floatIntensity={2}>
-        <mesh>
-          <torusKnotGeometry args={[2, 0.4, 128, 32]} />
-          <meshStandardMaterial 
-            color="#6366f1" 
-            wireframe 
-            emissive="#6366f1"
-            emissiveIntensity={1}
-            transparent
-            opacity={0.6}
-          />
-        </mesh>
-        <mesh scale={0.98}>
-          <torusKnotGeometry args={[2, 0.4, 64, 16]} />
-          <meshStandardMaterial 
-            color="#c084fc" 
-            wireframe 
-            emissive="#c084fc"
-            emissiveIntensity={0.5}
-            transparent
-            opacity={0.4}
-          />
-        </mesh>
-        {/* Core sphere */}
-        <mesh>
-          <sphereGeometry args={[1.2, 32, 32]} />
-          <meshStandardMaterial 
-            color="#3b82f6" 
-            emissive="#3b82f6"
-            emissiveIntensity={0.8}
-            transparent
-            opacity={0.8}
-          />
-        </mesh>
+        <group scale={0.7}>
+          <mesh>
+            <torusKnotGeometry args={[1.8, 0.3, 128, 32]} />
+            <meshStandardMaterial 
+              color="#818cf8" 
+              wireframe 
+              emissive="#818cf8"
+              emissiveIntensity={0.8}
+              transparent
+              opacity={0.4}
+            />
+          </mesh>
+          <mesh scale={0.95}>
+            <torusKnotGeometry args={[1.8, 0.3, 64, 16]} />
+            <meshStandardMaterial 
+              color="#c084fc" 
+              wireframe 
+              emissive="#c084fc"
+              emissiveIntensity={0.5}
+              transparent
+              opacity={0.25}
+            />
+          </mesh>
+          {/* Core sphere */}
+          <mesh>
+            <sphereGeometry args={[0.9, 32, 32]} />
+            <meshStandardMaterial 
+              color="#38bdf8" 
+              emissive="#38bdf8"
+              emissiveIntensity={0.6}
+              transparent
+              opacity={0.7}
+            />
+          </mesh>
+        </group>
       </Float>
     </group>
   );
